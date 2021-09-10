@@ -1,0 +1,10 @@
+---
+# vars file for lamp
+httpd_port: 80
+httpd_user: "apache"
+httpd_group: "apache"
+domain_name: "demo.anandg.xyz"
+mariadb_root_password: "mysqlroot@123"
+mariadb_database_name: "newdatabase"
+mariadb_database_user_name: "newdatabaseuser"
+mariadb_database_user_password: "databasepassword@123"

@@ -1,0 +1,8 @@
+---
+# tasks file for lamp
+- name: "Centos"
+  when: ansible_facts['distribution'] == "CentOS"
+  import_tasks: centos.yml
+- name: "Amazon"
+  when: ansible_facts['distribution'] == "Amazon"
+  import_tasks: amazon.yml

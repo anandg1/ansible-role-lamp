@@ -1,0 +1,129 @@
+---
+# tasks file for lamp
+- name: "Upgrade all packages"
+  yum:
+    name: "*"
+    state: latest
+
+- name: "Install EPEL repo"
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
+    state: present
+
+- name: "Import EPEL GPG key"
+  rpm_key:
+    key: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+    state: present
+
+- name: "Installing Remi repo in centOS"
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm
+    state: present
+
+- name: "Import remi GPG key"
+  rpm_key:
+    key: http://rpms.remirepo.net/RPM-GPG-KEY-remi
+    state: present
+
+- name: "Enabling the MariaDB repository"
+  yum_repository:
+    name: MariaDB
+    description: MariaDB repository
+    file: /etc/yum.repos.d/MariaDB
+    baseurl: http://yum.mariadb.org/10.3/centos7-amd64
+    gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgcheck: true
+
+- name: "Installation of LAMP stack"
+  yum:
+    name: ['httpd', 'mariadb-server','php']
+    enablerepo: "remi-php74"
+    state: present
+  notify:
+    - restart-httpd
+      
+- name: "Installation extra sql & php extensions"
+  yum:
+    name: ['MySQL-python','php-common','php-opcache','php-mcrypt','php-cli','php-gd','php-curl','php-mysql']
+    enablerepo: "remi-php74"
+    state: present
+  notify:
+    - restart-httpd
+
+- name: "info.php creation"
+  copy:
+    src: "info.php"
+    dest: "/var/www/html/{{ domain_name }}/"
+    owner: "{{ httpd_user }}"
+    group: "{{ httpd_group }}"
+      
+
+- name: "Restarting/Enabling Mariadb Service"
+  service:
+    name: mariadb
+    state: restarted
+    enabled: true
+    
+- name: "httpd.conf creation from template"
+  template:
+    src: httpd.conf.tmpl
+    dest: /etc/httpd/conf/httpd.conf
+  notify:
+    - restart-httpd
+    
+
+- name: "Virtualhost Creation from template"
+  template:
+    src: virtualhost.conf.tmpl
+    dest: "/etc/httpd/conf.d/{{ domain_name }}.conf"
+  notify:
+    - restart-httpd  
+  
+
+- name: "DocumentRoot Creation"
+  file:
+    path: "/var/www/html/{{ domain_name }}"
+    state: directory
+    owner: "{{ httpd_user }}"
+    group: "{{ httpd_group }}"  
+  notify:
+    - restart-httpd  
+
+- name: "Changing Mariadb root password"
+  ignore_errors: true
+  mysql_user: 
+    login_user: "root"
+    login_password: ""
+    user: "root"
+    password: "{{ mariadb_root_password }}"
+    host_all: true
+
+- name: "Removing test database"  
+  mysql_db:
+    login_user: "root"
+    login_password: "{{ mariadb_root_password }}"
+    name: "test"
+    state: absent
+
+- name : "Removing anonymous users"
+  mysql_user:
+    login_user: "root"
+    login_password: "{{ mariadb_root_password }}"
+    user: ""
+    state: absent
+    host_all: true
+
+- name: "Creating new database"
+  mysql_db:
+    login_user: "root"
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ mariadb_database_name }}"
+    state: present
+
+- name: "Creating a new database user"
+  mysql_user:
+    login_user: "root"
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ mariadb_database_user_name }}"
+    password: "{{ mariadb_database_user_password }}"
+    priv: '{{ mariadb_database_name }}.*:ALL'
