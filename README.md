@@ -1,4 +1,4 @@
-<h1 class="code-line" data-line-start=0 data-line-end=1 ><a id="Ansible_role_for_building_a_LAMP_stack_on_Amazon_Linux2_0_and_CentOS_7"></a>Ansible role for building a LAMP stack Amazon Linux2 and CentOS 7</h1>
+<h1 class="code-line" data-line-start=0 data-line-end=1 ><a id="Ansible_role_for_building_a_LAMP_stack_in_Amazon_Linux2_0_and_CentOS_7"></a>Ansible role for building a LAMP stack in Amazon Linux2 and CentOS 7</h1>
 <p class="has-line-data" data-line-start="2" data-line-end="3">This is a Ansible role to deploy a LAMP Stack on centos7/amazon-linux2 hosts.</p>
 <ul>
 <li class="has-line-data" data-line-start="4" data-line-end="6">Roles let you automatically load related vars, files, tasks, handlers, and other Ansible artifacts based on a known file structure. After you group your content in roles, you can easily reuse them and share them with other users.Each directory contains a main.yml file which contains relevant content.</li>
