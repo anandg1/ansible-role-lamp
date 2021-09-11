@@ -37,7 +37,7 @@
 <ul>
 <li class="has-line-data" data-line-start="42" data-line-end="43">Add hosts in an inventory file(say inventory.txt) under your working directory.</li>
 </ul>
-<h4 class="code-line" data-line-start=43 data-line-end=44 ><a id="Apache__Database_configuration_43"></a>Apache &amp; Database configuration</h4>
+<h4 class="code-line" data-line-start=43 data-line-end=44 ><a id="Apache__Database_configuration_43"></a>Configuration</h4>
 <ul>
 <li class="has-line-data" data-line-start="44" data-line-end="45">Configuration of variables for both apache (port number,httpd_user,httpd_group) and mariadb (domain_name,mariadb_root_password,mariadb_database_name,mariadb_database_user_name,mariadb_database_user_password) are included in main.yml file the vars section, which can be modified as per the requirement.</li>
 </ul>
