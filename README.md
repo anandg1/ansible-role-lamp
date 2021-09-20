@@ -48,5 +48,5 @@
 <p class="has-line-data" data-line-start="51" data-line-end="52">Inroder to execute, run</p>
 <pre><code class="has-line-data" data-line-start="53" data-line-end="55" class="language-sh">ansible-playbook -i inventory_file your_custom.yml
 </code></pre>
-<p class="has-line-data" data-line-start="56" data-line-end="57">'your_custom.yml' can be any playbook with the role included in it </p>
+<p class="has-line-data" data-line-start="56" data-line-end="57">'your_custom.yml' can be any playbook with the role included in it. </p>
 
